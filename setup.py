@@ -28,9 +28,9 @@ from setuptools import find_packages, setup, Command
 # Package meta-data.
 NAME = "efficientnet"
 DESCRIPTION = "EfficientNet model re-implementation. Keras and TensorFlow Keras."
-URL = "https://github.com/qubvel/efficientnet"
-EMAIL = "qubvel@gmail.com"
-AUTHOR = "Pavel Yakubovskiy"
+URL = "https://github.com/awsa49/efficientnet-spec"
+EMAIL = "awsa49@gmail.com"
+AUTHOR = "Awsa Rahman"
 REQUIRES_PYTHON = ">=3.0.0"
 VERSION = None
 
