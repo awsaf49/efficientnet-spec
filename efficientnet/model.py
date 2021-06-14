@@ -55,15 +55,15 @@ DEFAULT_BLOCKS_ARGS = [
     BlockArgs(kernel_size=3, num_repeat=1, input_filters=32, output_filters=16,
               expand_ratio=1, id_skip=True, strides=[1, 1], se_ratio=0.25),
     BlockArgs(kernel_size=3, num_repeat=2, input_filters=16, output_filters=24,
-              expand_ratio=6, id_skip=True, strides=[1, 2], se_ratio=0.25),
+              expand_ratio=6, id_skip=True, strides=[2, 2], se_ratio=0.25),
     BlockArgs(kernel_size=5, num_repeat=2, input_filters=24, output_filters=40,
-              expand_ratio=6, id_skip=True, strides=[1, 2], se_ratio=0.25),
+              expand_ratio=6, id_skip=True, strides=[2, 2], se_ratio=0.25),
     BlockArgs(kernel_size=3, num_repeat=3, input_filters=40, output_filters=80,
-              expand_ratio=6, id_skip=True, strides=[1, 2], se_ratio=0.25),
+              expand_ratio=6, id_skip=True, strides=[2, 2], se_ratio=0.25),
     BlockArgs(kernel_size=5, num_repeat=3, input_filters=80, output_filters=112,
               expand_ratio=6, id_skip=True, strides=[1, 1], se_ratio=0.25),
     BlockArgs(kernel_size=5, num_repeat=4, input_filters=112, output_filters=192,
-              expand_ratio=6, id_skip=True, strides=[1, 2], se_ratio=0.25),
+              expand_ratio=6, id_skip=True, strides=[2, 2], se_ratio=0.25),
     BlockArgs(kernel_size=3, num_repeat=1, input_filters=192, output_filters=320,
               expand_ratio=6, id_skip=True, strides=[1, 1], se_ratio=0.25)
 ]
@@ -187,13 +187,14 @@ def mb_conv_block(inputs, block_args, activation, drop_rate=None, prefix='', ):
 
     # Depthwise Convolution
     x = layers.DepthwiseConv2D(block_args.kernel_size,
-                               strides=block_args.strides,
+                               strides=[1, 1],
                                padding='same',
                                use_bias=False,
                                depthwise_initializer=CONV_KERNEL_INITIALIZER,
                                name=prefix + 'dwconv')(x)
     x = layers.BatchNormalization(axis=bn_axis, name=prefix + 'bn')(x)
     x = layers.Activation(activation, name=prefix + 'activation')(x)
+    x = layers.MaxPooling2D(strides=[1, 2])(x) if 2 in block_args.strides else x
 
     # Squeeze and Excitation phase
     if has_se:
@@ -343,7 +344,7 @@ def EfficientNet(width_coefficient,
     # Build stem
     x = img_input
     x = layers.Conv2D(round_filters(32, width_coefficient, depth_divisor), 3,
-                      strides=(2, 2),
+                      strides=(1, 2),
                       padding='same',
                       use_bias=False,
                       kernel_initializer=CONV_KERNEL_INITIALIZER,
