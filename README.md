@@ -99,7 +99,7 @@ The performance of each model variant using the pre-trained weights converted fr
 ### Installing from the source
 
 ```bash
-$ pip install -U git+https://github.com/qubvel/efficientnet
+$ pip install -U git+https://github.com/awsaf49/efficientnet-spec
 ```
 
 ### Installing from PyPI
