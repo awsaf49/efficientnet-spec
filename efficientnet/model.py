@@ -344,7 +344,7 @@ def EfficientNet(width_coefficient,
     # Build stem
     x = img_input
     x = layers.Conv2D(round_filters(32, width_coefficient, depth_divisor), 3,
-                      strides=(1, 2),
+                      strides=(2, 2),
                       padding='same',
                       use_bias=False,
                       kernel_initializer=CONV_KERNEL_INITIALIZER,
